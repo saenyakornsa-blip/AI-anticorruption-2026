@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ระบบสะท้อนผลนิเทศปฐมวัย - ศธจ.นครราชสีมา</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Sarabun -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+    }
+    .custom-gradient {
+      background: linear-gradient(135deg, #fdf2f8 0%, #f0fdf4 50%, #ecfeff 100%);
+    }
+  </style>
+</head>
+<body class="custom-gradient min-h-screen py-8 px-4">
+
+  <div class="max-w-3xl mx-auto bg-white/80 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-pink-100">
+    
+    <!-- Header แบนเนอร์น่ารักสดใส -->
+    <div class="bg-gradient-to-r from-pink-400 via-amber-300 to-teal-400 p-8 text-center relative overflow-hidden">
+      <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div>
+      <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-teal-100/30 rounded-full blur-2xl"></div>
+      <h1 class="text-3xl font-bold text-white drop-shadow-md mb-2">🎈 แบบสะท้อนผลการจัดประสบการณ์ 🎈</h1>
+      <p class="text-white/90 text-sm md:text-base font-medium">โครงการเสริมสร้างธรรมาภิบาลและการนิเทศ ติดตามฯ ศธจ.นครราชสีมา</p>
+    </div>
+
+    <!-- ข้อความต้อนรับทางจิตวิทยา -->
+    <div class="p-6 md:p-8 border-b border-pink-100 bg-pink-50/30">
+      <h2 class="text-lg font-bold text-pink-600 mb-2">สวัสดีคุณครูทุกท่านครับ! 💖✨</h2>
+      <p class="text-gray-600 text-sm leading-relaxed">
+        แบบสะท้อนผลฉบับนี้ถูกออกแบบขึ้นมาเพื่อรับฟัง <span class="text-pink-600 font-semibold">"เสียงจริง"</span> และ <span class="text-teal-600 font-semibold">"ไอเดียจริง"</span> จากหน้างานห้องเรียนของคุณครู เพื่อช่วยลดภาระงานเอกสาร และคอยสนับสนุนคุณครูอย่างตรงจุดที่สุด 
+        <br><strong class="text-amber-500">🚫 ไม่มีการจับผิด / ไม่มีการตรวจให้คะแนน / ไม่มีคำตอบที่ผิด!</strong> มาร่วมแบ่งปันเรื่องราวดีๆ กันครับ
+      </p>
+    </div>
+
+    <!-- ฟอร์มกรอกข้อมูล -->
+    <form id="supervisionForm" class="p-6 md:p-8 space-y-8" onsubmit="event.preventDefault(); handleFormSubmit();">
+      
+      <!-- ==================== ส่วนที่ 1: ข้อมูลทั่วไป ==================== -->
+      <div class="space-y-4">
+        <h3 class="text-xl font-bold text-teal-600 border-l-4 border-teal-400 pl-3">🌟 ส่วนที่ 1: ข้อมูลเบื้องต้นคุณครู</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">คำนำหน้า <span class="text-red-500">*</span></label>
+            <input type="text" id="prefix" name="prefix" placeholder="นาย / นาง / นางสาว / ซิสเตอร์" required
+                   class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">ชื่อจริง <span class="text-red-500">*</span></label>
+            <input type="text" id="firstName" name="firstName" placeholder="ชื่อจริงของคุณครู" required
+                   class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">นามสกุล <span class="text-red-500">*</span></label>
+            <input type="text" id="lastName" name="lastName" placeholder="นามสกุลของคุณครู" required
+                   class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">โรงเรียนต้นสังกัด <span class="text-red-500">*</span></label>
+          <select id="school" name="school" required
+                  class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-400">
+            <option value="" disabled selected>-- เลือกโรงเรียนของคุณครู --</option>
+            <option value="กมลวิชญ์ศึกษา">กมลวิชญ์ศึกษา</option>
+            <option value="การศึกษาคนตาบอดนครราชสีมา">การศึกษาคนตาบอดนครราชสีมา</option>
+            <option value="กีรติศึกษา">กีรติศึกษา</option>
+            <option value="เก้งเต็ก">เก้งเต็ก</option>
+            <option value="เกียรติคุณวิทยา">เกียรติคุณวิทยา</option>
+            <option value="คมพิสิฐวิทยา">คมพิสิฐวิทยา</option>
+            <option value="โคราชวิทยา">โคราชวิทยา</option>
+            <option value="จรัสพงษ์วิทยา">จรัสพงษ์วิทยา</option>
+            <option value="จุ้ยฮั้ววิทยา">จุ้ยฮั้ววิทยา</option>
+            <option value="จุลมณีสุรนารี">จุลมณีสุรนารี</option>
+            <option value="เจ้าคุณปริยัติมุนีวิทยา">เจ้าคุณปริยัติมุนีวิทยา</option>
+            <option value="เซนต์โยเซฟศึกษา">เซนต์โยเซฟศึกษา</option>
+            <option value="ณัฐญาศึกษา">ณัฐญาศึกษา</option>
+            <option value="ดงเค็งศึกษา">ดงเค็งศึกษา</option>
+            <option value="ตะวันชัยวิทยา">ตะวันชัยวิทยา</option>
+            <option value="เตชะวิทย์">เตชะวิทย์</option>
+            <option value="ถนอมศิษย์วิทยา">ถนอมศิษย์วิทยา</option>
+            <option value="ทองปัญญาศึกษา">ทองปัญญาศึกษา</option>
+            <option value="เทเรซาอุปถัมภ์">เทเรซาอุปถัมภ์</option>
+            <option value="นพบุตรศึกษา(ชำนิ-แต้มนุสรณ์)">นพบุตรศึกษา(ชำนิ-แต้มนุสรณ์)</option>
+            <option value="นอร์เทอดาม">นอร์เทอดาม</option>
+            <option value="นานาชาติเซนต์สตีเฟ่นส์ เขาใหญ่">นานาชาติเซนต์สตีเฟ่นส์ เขาใหญ่</option>
+            <option value="นานาชาติเวสลี่">นานาชาติเวสลี่</option>
+            <option value="นานาชาติแองโกลสิงคโปร์ นครราชสีมา">นานาชาติแองโกลสิงคโปร์ นครราชสีมา</option>
+            <option value="นานาชาติแอ๊ดเวนตีสโคราช">นานาชาติแอ๊ดเวนตีสโคราช</option>
+            <option value="บัวใหญ่วิทยา">บัวใหญ่วิทยา</option>
+            <option value="บุญเจริญวิทยา">บุญเจริญวิทยา</option>
+            <option value="บุญณดาวิทยา">บุญณดาวิทยา</option>
+            <option value="ประชานุสรณ์">ประชานุสรณ์</option>
+            <option value="ประสารวิทยา">ประสารวิทยา</option>
+            <option value="ปรีชาชาญ">ปรีชาชาญ</option>
+            <option value="ปลูกปัญญา">ปลูกปัญญา</option>
+            <option value="ปลูกรัก">ปลูกรัก</option>
+            <option value="ปัญญาประทีป">ปัญญาประทีป</option>
+            <option value="ปัญญาภัทร">ปัญญาภัทร</option>
+            <option value="ปิ่นนรินทร์วิทยา">ปิ่นนรินทร์วิทยา</option>
+            <option value="ปิยศึกษา(มัธยมวัดดอนขวาง)">ปิยศึกษา(มัธยมวัดดอนขวาง)</option>
+            <option value="พงษ์ศิริวิทยา">พงษ์ศิริวิทยา</option>
+            <option value="พฤกษาวิทยา">พฤกษาวิทยา</option>
+            <option value="พิทักษ์ภูเบนทร์">พิทักษ์ภูเบนทร์</option>
+            <option value="พิทักษ์ภูเบนทร์ 7">พิทักษ์ภูเบนทร์ 7</option>
+            <option value="ภูมิสิทธิ์วิทยา">ภูมิสิทธิ์วิทยา</option>
+            <option value="ภูริตา">ภูริตา</option>
+            <option value="มงคลกุลวิทยา">มงคลกุลวิทยา</option>
+            <option value="มารดาดรุณีรักษ์">มารดาดรุณีรักษ์</option>
+            <option value="มารีย์ธงชัย">มารีย์ธงชัย</option>
+            <option value="มารีย์รักษ์">มารีย์รักษ์</option>
+            <option value="มารีย์วิทยา">มารีย์วิทยา</option>
+            <option value="มูลนิธิรุ่งนภานครราชสีมา">มูลนิธิรุ่งนภานครราชสีมา</option>
+            <option value="เมธาพัฒน์">เมธาพัฒน์</option>
+            <option value="รวมมิตรวิทยา">รวมมิตรวิทยา</option>
+            <option value="รุ่งอรุณวิทยา">รุ่งอรุณวิทยา</option>
+            <option value="เรืองศรีวิทยา">เรืองศรีวิทยา</option>
+            <option value="วัฒนวิทยา">วัฒนวิทยา</option>
+            <option value="วัดสุทธจินดา">วัดสุทธจินดา</option>
+            <option value="วานิชวิทยา">วานิชวิทยา</option>
+            <option value="ศรีบัณฑิตวิทยา">ศรีบัณฑิตวิทยา</option>
+            <option value="สกุลศึกษา">สกุลศึกษา</option>
+            <option value="สถิตปัญญา มอนเทสซอรี่">สถิตปัญญา มอนเทสซอรี่</option>
+            <option value="สมบูรณ์วิทยานุกูล">สมบูรณ์วิทยานุกูล</option>
+            <option value="สมปองวิทยานุสรณ์">สมปองวิทยานุสรณ์</option>
+            <option value="สอนคนตาบอดมกุฏคีรีวันเขาใหญ่">สอนคนตาบอดมกุฏคีรีวันเขาใหญ่</option>
+            <option value="สัญลักษณ์วิทยา">สัญลักษณ์วิทยา</option>
+            <option value="สายมิตรโชคชัย 3">สายมิตรโชคชัย 3</option>
+            <option value="สายมิตรโนนไทย 6">สายมิตรโนนไทย 6</option>
+            <option value="สายมิตรปักธงชัย 7">สายมิตรปักธงชัย 7</option>
+            <option value="สายมิตรวังน้ำเขียว 5">สายมิตรวังน้ำเขียว 5</option>
+            <option value="สายมิตรหนองบุญมาก 11">สายมิตรหนองบุญมาก 11</option>
+            <option value="สายสัมพันธ์">สายสัมพันธ์</option>
+            <option value="สารสาสน์วิเทศโคราช">สารสาสน์วิเทศโคราช</option>
+            <option value="สุนันทาวิทยา">สุนันทาวิทยา</option>
+            <option value="สุรนารายณ์วิทยา">สุรนารายณ์วิทยา</option>
+            <option value="แสงสุริยาวิทยา">แสงสุริยาวิทยา</option>
+            <option value="เหรียญทองวิทยา">เหรียญทองวิทยา</option>
+            <option value="อนุบาล ก ไก่">อนุบาล ก ไก่</option>
+            <option value="อนุบาลกองบัญชาการช่วยรบที่ 2">อนุบาลกองบัญชาการช่วยรบที่ 2</option>
+            <option value="อนุบาลกอบัว">อนุบาลกอบัว</option>
+            <option value="อนุบาลแก้วตา">อนุบาลแก้วตา</option>
+            <option value="อนุบาลค่ายสุรนารี">อนุบาลค่ายสุรนารี</option>
+            <option value="อนุบาลคิดส์ปัญจพัฒนา">อนุบาลคิดส์ปัญจพัฒนา</option>
+            <option value="อนุบาลคีตคราม มอนเทสซอรี">อนุบาลคีตคราม มอนเทสซอรี</option>
+            <option value="อนุบาลจินดา">อนุบาลจินดา</option>
+            <option value="อนุบาลจุรีพันธ์">อนุบาลจุรีพันธ์</option>
+            <option value="อนุบาลจุลมณีเสิงสาง">อนุบาลจุลมณีเสิงสาง</option>
+            <option value="อนุบาลดวงแขวิทยา">อนุบาลดวงแขวิทยา</option>
+            <option value="อนุบาลดาวเรือง">อนุบาลดาวเรือง</option>
+            <option value="อนุบาลทิพย์ปัญญา">อนุบาลทิพย์ปัญญา</option>
+            <option value="อนุบาลบพิตร">อนุบาลบพิตร</option>
+            <option value="อนุบาลบวรนครราชสีมา">อนุบาลบวรนครราชสีมา</option>
+            <option value="อนุบาลบัณฑิตน้อย">อนุบาลบัณฑิตน้อย</option>
+            <option value="อนุบาลบัณฑิตน้อย 2">อนุบาลบัณฑิตน้อย 2</option>
+            <option value="อนุบาลบัณฑิตน้อย 4">อนุบาลบัณฑิตน้อย 4</option>
+            <option value="อนุบาลบัณฑิตน้อยพลับพลาสงเคราะห์">อนุบาลบัณฑิตน้อยพลับพลาสงเคราะห์</option>
+            <option value="อนุบาลบ้านคุณหนู ">อนุบาลบ้านคุณหนู </option>
+            <option value="อนุบาลบ้านผู้การ">อนุบาลบ้านผู้การ</option>
+            <option value="อนุบาลบ้านภาษา">อนุบาลบ้านภาษา</option>
+            <option value="อนุบาลบำรุงการ">อนุบาลบำรุงการ</option>
+            <option value="อนุบาลประภารัตน์">อนุบาลประภารัตน์</option>
+            <option value="อนุบาลพิมาย">อนุบาลพิมาย</option>
+            <option value="อนุบาลวัดทุ่งสว่าง">อนุบาลวัดทุ่งสว่าง</option>
+            <option value="อนุบาลวัดสะแก">อนุบาลวัดสะแก</option>
+            <option value="อนุบาลสกุลจิตร">อนุบาลสกุลจิตร</option>
+            <option value="อนุบาลแสงไทยไตรลิงกัวคิดส์">อนุบาลแสงไทยไตรลิงกัวคิดส์</option>
+            <option value="อนุบาลแสนยวิทยาภูมิ">อนุบาลแสนยวิทยาภูมิ</option>
+            <option value="อนุบาลแสนสนุก">อนุบาลแสนสนุก</option>
+            <option value="อนุบาลหลานย่าโม">อนุบาลหลานย่าโม</option>
+            <option value="อนุบาลอนันตะ">อนุบาลอนันตะ</option>
+            <option value="อนุบาลอัจฉรา">อนุบาลอัจฉรา</option>
+            <option value="อนุศาสน์วิทยา">อนุศาสน์วิทยา</option>
+            <option value="อมรศิลป์">อมรศิลป์</option>
+            <option value="อัสสัมชัญนครราชสีมา">อัสสัมชัญนครราชสีมา</option>
+            <option value="อุดมวิทยานุสรณ์">อุดมวิทยานุสรณ์</option>
+            <option value="อุบลรัตน์">อุบลรัตน์</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">ระดับชั้นที่ท่านรับผิดชอบในการจัดกิจกรรมการเรียนรู้ (เลือกได้มากกว่า 1 ข้อ) <span class="text-red-500">*</span></label>
+          <div class="flex flex-wrap gap-4">
+            <label class="flex items-center space-x-2 bg-pink-50 hover:bg-pink-100/70 px-4 py-2 rounded-xl border border-pink-100 transition cursor-pointer">
+              <input type="checkbox" name="levels" value="ปฐมวัย" class="rounded text-pink-500 focus:ring-pink-300">
+              <span class="text-gray-700 text-sm">ปฐมวัย</span>
+            </label>
+            <label class="flex items-center space-x-2 bg-pink-50 hover:bg-pink-100/70 px-4 py-2 rounded-xl border border-pink-100 transition cursor-pointer">
+              <input type="checkbox" name="levels" value="ประถมศึกษา" class="rounded text-pink-500 focus:ring-pink-300">
+              <span class="text-gray-700 text-sm">ประถมศึกษา</span>
+            </label>
+            <label class="flex items-center space-x-2 bg-pink-50 hover:bg-pink-100/70 px-4 py-2 rounded-xl border border-pink-100 transition cursor-pointer">
+              <input type="checkbox" name="levels" value="มัธยมศึกษา" class="rounded text-pink-500 focus:ring-pink-300">
+              <span class="text-gray-700 text-sm">มัธยมศึกษา</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ตัวแยกกลุ่มแบบไดนามิก -->
+        <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-100">
+          <label class="block text-sm font-semibold text-amber-800 mb-2">ประวัติการเข้าร่วมการอบรมโครงการหลักสูตรต้านทุจริตศึกษา <span class="text-red-500">*</span></label>
+          <div class="space-y-2">
+            <label class="flex items-center space-x-3 cursor-pointer">
+              <input type="radio" name="attendance" value="attended" onclick="toggleSections('attended')" required
+                     class="text-amber-500 focus:ring-amber-300">
+              <span class="text-gray-700 text-sm font-medium">✨ ผ่านการอบรมในวันที่ 26 มีนาคม 2569</span>
+            </label>
+            <label class="flex items-center space-x-3 cursor-pointer">
+              <input type="radio" name="attendance" value="not_attended" onclick="toggleSections('not_attended')"
+                     class="text-amber-500 focus:ring-amber-300">
+              <span class="text-gray-700 text-sm font-medium">💬 ไม่ได้เข้าร่วมอบรม</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ส่วนที่ 2A: สำหรับผู้เข้าร่วมอบรม (ซ่อนอยู่ก่อน) ==================== -->
+      <div id="sectionAttended" class="hidden space-y-6 border-t border-pink-100 pt-6">
+        <h3 class="text-xl font-bold text-pink-500 border-l-4 border-pink-400 pl-3">🎨 ส่วนที่ 2: สะท้อนความคิดเห็น (สำหรับผู้เข้าอบรม 26 มี.ค. 69)</h3>
+        
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">1. คุณครูได้ทำงานร่วมกับ "NotebookLM Prompt" ในการออกแบบแผนการสอนอย่างไรบ้างครับ? <span class="text-red-500">*</span></label>
+          <div class="space-y-2 text-sm text-gray-700">
+            <label class="flex items-start space-x-2"><input type="radio" name="q1" value="ลอกทั้งหมด" class="mt-1"><span class="ml-1">🎨 นำผลลัพธ์เกมที่ AI แนะนำไปปรับใช้ออกแบบแผนทั้งหมด (เพราะค่อนข้างตรงบริบทและสมบูรณ์อยู่แล้ว)</span></label>
+            <label class="flex items-start space-x-2"><input type="radio" name="q1" value="ดึงไอเดียมาโมดิฟาย 50%" class="mt-1"><span class="ml-1">🛠️ ดึงเฉพาะกิมมิคหลักมา แล้วนำมาโมดิฟายให้เข้ากับบริบทเด็กๆ ในสไตล์ตัวเองประมาณ 50%</span></label>
+            <label class="flex items-start space-x-2"><input type="radio" name="q1" value="ใช้เป็นไอเดียเฉยๆ" class="mt-1"><span class="ml-1">🧠 ใช้ AI เป็นเพียงเครื่องมือระดมสมอง (Brainstorm) แล้วออกแบบวิธีเล่นเองใหม่ทั้งหมด</span></label>
+            <label class="flex items-start space-x-2"><input type="radio" name="q1" value="ยังไม่ได้ใช้" class="mt-1"><span class="ml-1">❌ สารภาพตามตรงว่ายังไม่ได้ใช้ผลลัพธ์จาก AI เลยในแผนนี้ (ยินดีรับฟังปัญหาเพื่อช่วยเหลือในรอบหน้าครับ)</span></label>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">2. แผนกิจกรรมต้านทุจริตบวก EF นี้ คุณครูได้นำไปทดลองสอนจริงกับเด็กๆ หรือยังครับ? <span class="text-red-500">*</span></label>
+          <div class="space-y-2 text-sm text-gray-700">
+            <label class="flex items-center space-x-2"><input type="radio" name="q2" value="สอนจริงแล้ว"><span class="ml-1">✅ สอนจริงในห้องเรียนเรียบร้อยแล้ว</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q2" value="กำลังจะสอนเร็วๆ นี้"><span class="ml-1">⏳ ยังไม่ได้สอนจริง แต่บรรจุในแผนการสอนจริงและจะสอนเร็วๆ นี้</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q2" value="ยังไม่ได้นำไปใช้"><span class="ml-1">🔒 ยังไม่ได้ทดลองใช้จริงในภาคเรียนนี้</span></label>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">3. [หากทดลองสอนจริงแล้ว] คุณครูพบสภาวะการตื่นตัวหรือพฤติกรรมเรียนรู้ของเด็กๆ ในข้อใดโดดเด่นที่สุด?</label>
+          <div class="space-y-2 text-sm text-gray-700">
+            <label class="flex items-center space-x-2"><input type="radio" name="q3" value="เด็กตื่นเต้นและร่วมมือ"><span class="ml-1">🤩 เด็กตื่นเต้น มุ่งมั่น และสนุกกับกติกาแนวร่วมมือ/แบ่งปัน (Cooperative Play) ชัดเจน</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q3" value="สนุกแต่ควบคุมยาก"><span class="ml-1">🌀 เด็กสนุกสุดเหวี่ยง แต่คุณครูต้องใช้พลังเยอะในการประคองชั้นเรียนในช่วงแรก</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q3" value="ไม่แตกต่างจากทั่วไป"><span class="ml-1">😐 เด็กเล่นสนุกดี แต่ความตื่นตัวไม่แตกต่างจากกิจกรรมทั่วไปที่เคยจัดมา</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q3" value="กติกาสับสนอยากให้ปรับปรุง"><span class="ml-1">⚠️ เด็กเกิดความสับสนในกติกาใหม่ (แอบอยากให้ปรับกิจกรรมให้อ่านง่ายกว่านี้)</span></label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">4. ชวนแชร์โมเมนต์น่ารักๆ หรือเรื่องเล่าประทับใจสั้นๆ จากห้องเรียน (เขียนตามจริงได้เลยครับครู 💖)</label>
+          <textarea id="q4" name="q4" rows="3" placeholder="เช่น ตอนที่เด็กยอมสละเก้าอี้ให้เพื่อน หรือแบ่งของเล่นกันอย่างเป็นธรรมชาติ..."
+                    class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm"></textarea>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">5. ในภาคเรียนถัดไป คุณครูคิดว่าอยากให้ "ผู้ช่วย AI" เข้ามาช่วยแบ่งเบาภาระงานในด้านใดบ้างครับ? (เลือกได้หลายข้อ) <span class="text-red-500">*</span></label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700">
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q5" value="แต่งบทนิทานคุณธรรม" class="mt-1"><span class="ml-1">📖 แต่งนิทานคุณธรรม / แนะนำการทำนิทานภาพ</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q5" value="คิดเกมบ่มเพาะ EF" class="mt-1"><span class="ml-1">🎮 ออกแบบเกมบ่มเพาะ EF หรือสัญญาสุจริตแบบง่าย</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q5" value="ช่วยเกลาประโยครายงาน" class="mt-1"><span class="ml-1">✍️ เกลาประโยครายงานพฤติกรรมเด็กหรือประเมินภายใน</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q5" value="สรุปสื่อสารเชิงบวกกับผู้ปกครอง" class="mt-1"><span class="ml-1">📢 ช่วยคิดข้อความสื่อสารกับผู้ปกครองเพื่อสร้างวินัยที่บ้าน</span></label>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">6. อะไรคือสิ่งที่ศึกษาธิการจังหวัดนครราชสีมา จะยื่นมือเข้าช่วยคุณครูได้ดีที่สุดในระยะถัดไปครับ? <span class="text-red-500">*</span></label>
+          <div class="space-y-2 text-sm text-gray-700">
+            <label class="flex items-center space-x-2"><input type="radio" name="q6" value="ชุดสื่อกล่องสำเร็จรูป"><span class="ml-1">📦 อยากได้ชุดกิจกรรมกล่องสำเร็จรูป (Ready-to-use Toolkits) จัดส่งตรงถึงโรงเรียนเลย</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q6" value="จัดอบรมกึ่งเวิร์กชอป"><span class="ml-1">🎓 อยากเข้าร่วมอบรมกึ่ง Workshop จับมือทำด้วยคอมพิวเตอร์จริง</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q6" value="กลุ่มชุมชน PLC"><span class="ml-1">🤝 อยากมีกลุ่มชุมชนสั้นๆ (PLC) ไว้แลกเปลี่ยน เรียนรู้ไอเดียดีๆ จากเพื่อนต่างโรงเรียน</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q6" value="ช่วยลดขั้นตอนรายงาน"><span class="ml-1">📊 อยากให้ช่วยประสานและแนะนำการรายงานในระบบประเมินให้น้อยขั้นตอนลง</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== ส่วนที่ 2B: สำหรับผู้ที่ไม่ได้เข้าอบรม (ซ่อนอยู่ก่อน) ==================== -->
+      <div id="sectionNotAttended" class="hidden space-y-6 border-t border-pink-100 pt-6">
+        <h3 class="text-xl font-bold text-teal-600 border-l-4 border-teal-400 pl-3">💡 ส่วนที่ 2: ความคิดเห็นและเป้าหมายการก้าวรับเทคโนโลยี (กลุ่มไม่ได้เข้าอบรม)</h3>
+        
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">1. ที่ผ่านมา คุณครูเคยใช้เครื่องมือ AI (เช่น ChatGPT, Gemini, Canva, Claude) ช่วยออกแบบการสอนบ้างหรือยังครับ? <span class="text-red-500">*</span></label>
+          <div class="space-y-2 text-sm text-gray-700">
+            <label class="flex items-center space-x-2"><input type="radio" name="q1_na" value="ใช้เป็นประจำ"><span class="ml-1">🚀 ใช้อยู่เป็นประจำสม่ำเสมอ ลดเวลาเตรียมการสอนได้เยอะมาก</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q1_na" value="เคยใช้บ้างเล็กน้อย"><span class="ml-1">🚲 เคยทดลองใช้บ้างเล็กน้อยเวลาตื้อๆ คิดไอเดียใหม่ไม่ออก</span></label>
+            <label class="flex items-center space-x-2"><input type="radio" name="q1_na" value="ไม่เคยใช้เลย"><span class="ml-1">👶 ยังไม่เคยลองใช้เลย แต่พร้อมและอยากเรียนรู้เพื่อเปิดโลกใหม่</span></label>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">2. ปัญหาหรือความฝืดเคืองที่คุณครูเจอมากที่สุดในการเข้าใช้งานระบบรายงาน "โรงเรียนพร้อม" (school.nacc.go.th) ในปัจจุบันคือข้อใด? (เลือกได้หลายข้อ) <span class="text-red-500">*</span></label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700">
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q2_na" value="เข้าสู่ระบบยาก" class="mt-1"><span class="ml-1">🔑 เข้าสู่ระบบยาก / ลืมรหัสผ่าน / บัญชีมีปัญหา</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q2_na" value="ขั้นตอนซับซ้อน" class="mt-1"><span class="ml-1">📂 ขั้นตอนการรายงานมีข้อมูลและช่องเอกสารที่ซับซ้อนเกินไป</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q2_na" value="ไม่แน่ใจประเภทภาพหลักฐาน" class="mt-1"><span class="ml-1">🧩 ขาดความชัดเจนว่าควรจัดเตรียมภาพหลักฐานแบบไหนส่งระบบ</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q2_na" value="ไม่มีปัญหา" class="mt-1"><span class="ml-1">✅ ใช้งานได้ราบรื่นดี ไม่มีอุปสรรคใดๆ</span></label>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold text-gray-700">3. หากมีการจัดอบรมสร้างนวัตกรรมต้านทุจริตศึกษาด้วย AI ในครั้งถัดไป คุณครูสนใจอยากศึกษาเรื่องอะไรมากที่สุด? (เลือกได้หลายข้อ) <span class="text-red-500">*</span></label>
+          <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q3_na" value="บอร์ดเกมบ่มเพาะคุณธรรม" class="mt-1"><span class="ml-1">🎮 การทำบอร์ดเกมหรือกิจกรรมเล่นปนเรียนแบบเห็นภาพง่าย (Gamification)</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q3_na" value="การคราฟต์นิทานคุณธรรม" class="mt-1"><span class="ml-1">🌟 การสั่งคำสั่ง (Prompt) สรรสร้างนิทานคุณธรรมและทักษะสมอง EF</span></label>
+            <label class="flex items-start space-x-2"><input type="checkbox" name="q3_na" value="เทคนิคแต่งรูปสรุปงานเสร็จไว" class="mt-1"><span class="ml-1">📸 เทคนิคแต่งรูปภาพในกิจกรรมและเขียนอธิบายให้ผ่านเกณฑ์ส่งประเมินทันใจ</span></label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">4. มีสิ่งใดเพิ่มเติมที่คุณครูอยากฝากบอก ศธจ.นครราชสีมา เพื่อช่วยสนับสนุนเพื่อนครูเอกชนมากที่สุดไหมครับ?</label>
+          <textarea id="q4_na" name="q4_na" rows="3" placeholder="ระบุความคิดเห็นของคุณครูเพิ่มเติมได้เต็มที่เลยครับ..."
+                    class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-300 text-sm"></textarea>
+        </div>
+      </div>
+
+      <!-- ปุ่มส่งแบบฟอร์ม -->
+      <div class="pt-4 text-center">
+        <button type="submit" id="submitBtn"
+                class="bg-gradient-to-r from-pink-500 to-teal-500 text-white font-bold px-8 py-3 rounded-2xl hover:opacity-90 transition transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg text-lg">
+          ส่งคำสะท้อนผล 💖
+        </button>
+      </div>
+
+    </form>
+    
+    <!-- หน้าจอแสดงความสำเร็จ (Confetti Screen) -->
+    <div id="successScreen" class="hidden p-8 text-center space-y-4">
+      <div class="text-6xl">🎉🥳🎈</div>
+      <h2 class="text-2xl font-bold text-teal-600">ส่งข้อมูลสำเร็จเรียบร้อยแล้วครับ!</h2>
+      <p class="text-gray-600 font-medium">ขอบคุณคุณครูทุกท่านเป็นอย่างสูงที่ร่วมแชร์ "เรื่องเล่าจริง" ในวันนี้</p>
+      <p class="text-pink-500 text-sm font-semibold">"ข้อมูลและเสียงของครู จะเป็นส่วนสำคัญในการพัฒนาหลักสูตรในก้าวถัดไปครับ" ❤️</p>
+    </div>
+
+  </div>
+
+  <!-- JavaScript ควบคุมไดนามิก UI -->
+  <script>
+    // 🚨 นำลิงก์ Web App URL ของคุณที่ได้จากการดีพลอยใน Google Sheets มาวางตรงนี้
+    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbyis6C4RUqexhP-o7QIsgU0PtRJEBz4DkanAVCSy9tMq80d5WxAvzHv0N3DWeJwd-LaCw/exec";
+
+    // สลับหน้าจอคำถามตามการอบรม (ไม่ต้องรีโหลด)
+    function toggleSections(type) {
+      const secAttended = document.getElementById('sectionAttended');
+      const secNotAttended = document.getElementById('sectionNotAttended');
+      
+      const attendedInputs = secAttended.querySelectorAll('input, textarea');
+      const notAttendedInputs = secNotAttended.querySelectorAll('input, textarea');
+      
+      if (type === 'attended') {
+        secAttended.classList.remove('hidden');
+        secNotAttended.classList.add('hidden');
+        
+        attendedInputs.forEach(el => { if(el.name !== 'q3' && el.name !== 'q4') el.required = true; });
+        notAttendedInputs.forEach(el => { el.required = false; el.checked = false; });
+      } else if (type === 'not_attended') {
+        secAttended.classList.add('hidden');
+        secNotAttended.classList.remove('hidden');
+        
+        attendedInputs.forEach(el => { el.required = false; el.checked = false; });
+        notAttendedInputs.forEach(el => { if(el.name !== 'q4_na') el.required = true; });
+      }
+    }
+
+    // ฟังก์ชันจัดการการกดส่งแบบฟอร์ม (ส่งข้อมูลข้ามขอบฟ้าไป Google Sheets)
+    function handleFormSubmit() {
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'กำลังบันทึกข้อมูลเข้าระบบ... ⏳';
+      
+      const form = document.getElementById('supervisionForm');
+      const formData = new FormData(form);
+      
+      // ดึงค่า Checkboxes
+      const levels = [];
+      document.querySelectorAll('input[name="levels"]:checked').forEach(el => levels.push(el.value));
+      
+      const q5 = [];
+      document.querySelectorAll('input[name="q5"]:checked').forEach(el => q5.push(el.value));
+
+      const q2_na = [];
+      document.querySelectorAll('input[name="q2_na"]:checked').forEach(el => q2_na.push(el.value));
+
+      const q3_na = [];
+      document.querySelectorAll('input[name="q3_na"]:checked').forEach(el => q3_na.push(el.value));
+
+      // ประกอบ Payload
+      const payload = {
+        prefix: document.getElementById('prefix').value,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        school: document.getElementById('school').value,
+        levels: levels,
+        attendance: formData.get('attendance'),
+        q1: formData.get('q1'),
+        q2: formData.get('q2'),
+        q3: formData.get('q3'),
+        q4: document.getElementById('q4').value,
+        q5: q5,
+        q6: formData.get('q6'),
+        q1_na: formData.get('q1_na'),
+        q2_na: q2_na,
+        q3_na: q3_na,
+        q4_na: document.getElementById('q4_na').value
+      };
+
+      // ส่งคำขอนำเข้า Sheet ข้ามโดเมนอย่างปลอดภัยด้วย HTTP POST (CORS friendly)
+      fetch(BACKEND_URL, {
+        method: 'POST',
+        mode: 'no-cors', // ตั้งค่าเป็น no-cors เพื่อให้สามารถส่งคำขอแบบข้ามโดเมนไปยัง Apps Script ได้โดยตรง
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        // ในโหมด no-cors เราจะไม่ได้รับ HTTP Status หรือ Response Body ที่สมบูรณ์
+        // แต่ถ้าคำขอส่งออกไปได้โดยไม่มี error บ่งชี้ว่าข้อมูลถูกยิงไปฝั่ง Apps Script สำเร็จ
+        form.classList.add('hidden');
+        document.getElementById('successScreen').classList.remove('hidden');
+      })
+      .catch(error => {
+        alert('เกิดปัญหาในการจัดส่ง: ' + error);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'ส่งคำสะท้อนผล 💖';
+      });
+    }
+  </script>
+</body>
+</html>
