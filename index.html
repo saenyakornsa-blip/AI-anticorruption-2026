@@ -338,12 +338,12 @@
 
   </div>
 
-  <!-- JavaScript ควบคุมไดนามิก UI -->
+<!-- JavaScript ควบคุมไดนามิก UI (เวอร์ชันแก้ไขบั๊ก Checkbox) -->
   <script>
     // 🚨 นำลิงก์ Web App URL ของคุณที่ได้จากการดีพลอยใน Google Sheets มาวางตรงนี้
-    const BACKEND_URL = "https://script.google.com/macros/s/AKfycbyis6C4RUqexhP-o7QIsgU0PtRJEBz4DkanAVCSy9tMq80d5WxAvzHv0N3DWeJwd-LaCw/exec";
+    const BACKEND_URL = "YOUR_APPS_SCRIPT_WEB_APP_URL";
 
-    // สลับหน้าจอคำถามตามการอบรม (ไม่ต้องรีโหลด)
+    // สลับหน้าจอคำถามตามการอบรม (แก้ไขไม่ให้ตั้ง required บน Checkbox)
     function toggleSections(type) {
       const secAttended = document.getElementById('sectionAttended');
       const secNotAttended = document.getElementById('sectionNotAttended');
@@ -355,18 +355,32 @@
         secAttended.classList.remove('hidden');
         secNotAttended.classList.add('hidden');
         
-        attendedInputs.forEach(el => { if(el.name !== 'q3' && el.name !== 'q4') el.required = true; });
+        attendedInputs.forEach(el => { 
+          // ข้าม Checkbox และข้อที่เป็นทางเลือก (q3, q4) ไม่ให้ติด required ของบราวเซอร์
+          if(el.name !== 'q3' && el.name !== 'q4' && el.type !== 'checkbox') {
+            el.required = true; 
+          } else {
+            el.required = false;
+          }
+        });
         notAttendedInputs.forEach(el => { el.required = false; el.checked = false; });
       } else if (type === 'not_attended') {
         secAttended.classList.add('hidden');
         secNotAttended.classList.remove('hidden');
         
         attendedInputs.forEach(el => { el.required = false; el.checked = false; });
-        notAttendedInputs.forEach(el => { if(el.name !== 'q4_na') el.required = true; });
+        notAttendedInputs.forEach(el => { 
+          // ข้าม Checkbox และข้อที่เป็นทางเลือก (q4_na) ไม่ให้ติด required ของบราวเซอร์
+          if(el.name !== 'q4_na' && el.type !== 'checkbox') {
+            el.required = true; 
+          } else {
+            el.required = false;
+          }
+        });
       }
     }
 
-    // ฟังก์ชันจัดการการกดส่งแบบฟอร์ม (ส่งข้อมูลข้ามขอบฟ้าไป Google Sheets)
+    // ฟังก์ชันจัดการการกดส่งแบบฟอร์ม (พร้อมระบบตรวจสอบความถูกต้องของ Checkbox)
     function handleFormSubmit() {
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
@@ -375,27 +389,59 @@
       const form = document.getElementById('supervisionForm');
       const formData = new FormData(form);
       
-      // ดึงค่า Checkboxes
+      // 1. ดึงและตรวจสอบ "ระดับชั้นที่สอน" (ต้องเลือกอย่างน้อย 1 ข้อ)
       const levels = [];
       document.querySelectorAll('input[name="levels"]:checked').forEach(el => levels.push(el.value));
+      if (levels.length === 0) {
+        alert('⚠️ โปรดเลือก "ระดับชั้นที่ท่านรับผิดชอบ" อย่างน้อย 1 ข้อครับ');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'ส่งคำสะท้อนผล 💖';
+        return;
+      }
       
+      const attendanceValue = formData.get('attendance');
       const q5 = [];
-      document.querySelectorAll('input[name="q5"]:checked').forEach(el => q5.push(el.value));
-
       const q2_na = [];
-      document.querySelectorAll('input[name="q2_na"]:checked').forEach(el => q2_na.push(el.value));
-
       const q3_na = [];
-      document.querySelectorAll('input[name="q3_na"]:checked').forEach(el => q3_na.push(el.value));
 
-      // ประกอบ Payload
+      // ตรวจสอบเงื่อนไขกลุ่มข้อมูลประเภท Checkbox ตามสิทธิ์การเข้าอบรม
+      if (attendanceValue === 'attended') {
+        // ดึงและตรวจสอบคำตอบข้อ 5 (ต้องเลือกอย่างน้อย 1 ข้อ)
+        document.querySelectorAll('input[name="q5"]:checked').forEach(el => q5.push(el.value));
+        if (q5.length === 0) {
+          alert('⚠️ โปรดเลือกคำตอบในข้อ 5 ("ผู้ช่วย AI" ที่อยากให้ช่วยในภาคเรียนถัดไป) อย่างน้อย 1 ข้อครับ');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'ส่งคำสะท้อนผล 💖';
+          return;
+        }
+      } else if (attendanceValue === 'not_attended') {
+        // ดึงและตรวจสอบคำตอบข้อ 2_na (ต้องเลือกอย่างน้อย 1 ข้อ)
+        document.querySelectorAll('input[name="q2_na"]:checked').forEach(el => q2_na.push(el.value));
+        if (q2_na.length === 0) {
+          alert('⚠️ โปรดเลือกคำตอบในข้อ 2 (ปัญหาการใช้งานระบบโรงเรียนพร้อม) อย่างน้อย 1 ข้อครับ');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'ส่งคำสะท้อนผล 💖';
+          return;
+        }
+
+        // ดึงและตรวจสอบคำตอบข้อ 3_na (ต้องเลือกอย่างน้อย 1 ข้อ)
+        document.querySelectorAll('input[name="q3_na"]:checked').forEach(el => q3_na.push(el.value));
+        if (q3_na.length === 0) {
+          alert('⚠️ โปรดเลือกคำตอบในข้อ 3 (เรื่องที่สนใจศึกษาด้วย AI) อย่างน้อย 1 ข้อครับ');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'ส่งคำสะท้อนผล 💖';
+          return;
+        }
+      }
+
+      // ประกอบโครงสร้าง Payload ส่งไป Google Apps Script หลังผ่านการตรวจความถูกต้องแล้ว
       const payload = {
         prefix: document.getElementById('prefix').value,
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
         school: document.getElementById('school').value,
         levels: levels,
-        attendance: formData.get('attendance'),
+        attendance: attendanceValue,
         q1: formData.get('q1'),
         q2: formData.get('q2'),
         q3: formData.get('q3'),
@@ -408,18 +454,16 @@
         q4_na: document.getElementById('q4_na').value
       };
 
-      // ส่งคำขอนำเข้า Sheet ข้ามโดเมนอย่างปลอดภัยด้วย HTTP POST (CORS friendly)
+      // ส่งคำขอนำเข้า Google Sheets
       fetch(BACKEND_URL, {
         method: 'POST',
-        mode: 'no-cors', // ตั้งค่าเป็น no-cors เพื่อให้สามารถส่งคำขอแบบข้ามโดเมนไปยัง Apps Script ได้โดยตรง
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'text/plain'
         },
         body: JSON.stringify(payload)
       })
       .then(response => {
-        // ในโหมด no-cors เราจะไม่ได้รับ HTTP Status หรือ Response Body ที่สมบูรณ์
-        // แต่ถ้าคำขอส่งออกไปได้โดยไม่มี error บ่งชี้ว่าข้อมูลถูกยิงไปฝั่ง Apps Script สำเร็จ
         form.classList.add('hidden');
         document.getElementById('successScreen').classList.remove('hidden');
       })
